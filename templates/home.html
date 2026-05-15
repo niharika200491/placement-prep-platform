@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Interview Prep App</title>
+
+    <!-- Animate.css -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        /* FULL BACKGROUND */
+        body {
+            height: 100vh;
+            background: url('https://images.unsplash.com/photo-1518770660439-4636190af475') no-repeat center;
+            background-size: cover;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* DARK OVERLAY */
+        .overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(rgba(0, 0, 0, 0.7),
+                    rgba(0, 0, 0, 0.8));
+        }
+
+        /* CONTENT BOX */
+        .container {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            color: white;
+        }
+
+        /* TITLE */
+        h1 {
+            font-size: 45px;
+            margin-bottom: 10px;
+        }
+
+        /* TAGLINE */
+        p {
+            font-size: 18px;
+            margin-bottom: 30px;
+        }
+
+        /* BUTTONS */
+        button {
+            padding: 12px 25px;
+            margin: 10px;
+            border: none;
+            border-radius: 25px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        /* LOGIN BUTTON */
+        .login-btn {
+            background: #00c6ff;
+            color: white;
+        }
+
+        .login-btn:hover {
+            transform: scale(1.1);
+        }
+
+        /* REGISTER BUTTON */
+        .register-btn {
+            background: transparent;
+            border: 2px solid white;
+            color: white;
+        }
+
+        .register-btn:hover {
+            background: white;
+            color: black;
+        }
+
+        /* QUOTES */
+        .quote {
+            margin-top: 25px;
+            font-size: 16px;
+            color: #ddd;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="overlay"></div>
+
+    <div class="container animate__animated animate__fadeInUp">
+
+        <h1>Crack Your Interview</h1>
+        <p>Practice. Improve. Get Hired.</p>
+
+        <!-- FLASK LINKS -->
+        <a href="{{url_for('login')}}">
+            <button class="login-btn">Login</button>
+        </a>
+
+        <a href="{{url_for('registration')}}">
+            <button class="register-btn">Register</button>
+        </a>
+
+        <div class="quote" id="quote"></div>
+
+    </div>
+
+    <script>
+        const quotes = [
+            "Success in interviews comes from preparation.",
+            "Practice daily, improve consistently.",
+            "Confidence is built through repetition.",
+            "Your dream job is one step away.",
+            "Code. Learn. Repeat."
+        ];
+
+        let i = 0;
+
+        function changeQuote() {
+            document.getElementById("quote").innerText = quotes[i];
+            i = (i + 1) % quotes.length;
+        }
+
+        changeQuote();
+        setInterval(changeQuote, 3000);
+    </script>
+
+</body>
+
+</html>

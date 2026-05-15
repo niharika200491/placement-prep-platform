@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Result</title>
+</head>
+
+<body>
+
+    <h2>Your Score</h2>
+    <p>Total Questions:{{t_q}}</p>
+    <p>Correct Answers: {{ score }}</p>
+    <p>Wrong Answers: {{ w_a }}</p>
+    <p>Percentage: {{percentage}}</p>
+    <h2>Wrong Answers</h2>
+
+    {% for w in wrong_answers %}
+
+    <p><b>Question:</b> {{ w.question }}</p><br>
+    <br? <p>Your Answer: {{ w.your_answer }}</p><br><br>
+        <p>Correct Answer: {{ w.correct_answer }}</p>
+
+        <hr>
+
+        {% endfor %}
+        <a href="{{ url_for('history') }}">View Test History</a>
+
+
+</body>
+
+</html>

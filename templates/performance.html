@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Student Performance</title>
+</head>
+
+<body>
+    <h2>Full Performance</h2>
+
+    <p>Total Tests Taken:{{ total_tests }}</p>
+    <p>Average Score:{{ avg_score }}</p>
+    <p>Best Score:{{ best_score }}</p>
+    <p>Weak Category:{{ weak_category }}</p>
+
+    <a href="{{ url_for('dashboard') }}">Back to Dashboard</a>
+</body>
+
+</html>

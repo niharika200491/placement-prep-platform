@@ -1,0 +1,25 @@
+<!DOCTYPE html>>
+<html>
+
+<head>
+    <title>
+        dashboard
+    </title>
+</head>
+
+<body>
+    <h2>Welcome, {{ name }}</h2><br><br>
+    <h3>Go For Test</h3>
+    <a href="{{ url_for('start_test') }}">Start Quiz</a>
+    <h3>View Leaderboard</h3>
+    <a href="{{ url_for('leaderboard',category='1') }}">Python</a> |
+    <a href="{{ url_for('leaderboard',category='2') }}">Java</a> |
+    <a href="{{ url_for('leaderboard',category='3')}}">DBMS</a> |
+    <a href="{{ url_for('leaderboard',category='4')}}">Aptitude</a> |
+    <a href="{{ url_for('leaderboard',category='5')}}">HTML/CSS</a>
+    <a href="{{url_for('logout')}}">Logout</a>
+
+
+</body>
+
+</html>

@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Test History</title>
+</head>
+
+<body>
+    <h2>Your Test History</h2>
+
+    {% if tests %}
+    <table border="1" cellpadding="5" cellspacing="0">
+        <tr>
+            <th>Difficulty</th>
+            <th>Category</th>
+            <th>Score</th>
+            <th>Total Questions</th>
+            <th>Percentage</th>
+            <th>Date</th>
+        </tr>
+        {% for t in tests %}
+        <tr>
+            <td>{{ t[0] }}</td>
+            <td>{{ t[1] }}</td>
+            <td>{{ t[2] }}</td>
+            <td>{{ t[3] }}</td>
+            <td>{{ t[4] }}</td>
+            <td>{{ t[5] }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+    {% else %}
+    <p>No test history available.</p>
+    {% endif %}
+
+    <br>
+    <h1>If You Want To Know About Your Performance</h1>
+    <a href="{{url_for('performance',user_id=session['user_id'])}}">Viem Performance</a>
+    <a href=" {{ url_for('dashboard') }}">Back to Dashboard</a>
+</body>
+
+</html>

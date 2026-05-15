@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Registration page
+    </title>
+</head>
+
+<body>
+    <form method="POST" autocomplete="off">
+        <label for="fname">Full Name:</label>
+        <input type="text" id="fname" name="name" autocomplete="off" required><br>
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" autocomplete="new-email"><br>
+        <label for="psw">Password: </label>
+        <input type="password" id="psw" name="password" autocomplete="new-password"><br>
+        <label for="cpsw">Confirm Password:</label>
+        <input type="password" id="cpsw" name="cpsw"><br>
+        <button type="submit">Registration</button>
+        <h3>Already have an account?</h3>
+        <a href="{{url_for('login')}}">login</a>
+    </form>
+</body>
+
+</html>

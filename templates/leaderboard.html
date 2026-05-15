@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>{{ category }} Leaderboard</title>
+</head>
+
+<body>
+
+    <h2>{{ category }} Leaderboard - Top 5 Students</h2>
+
+    {% if top_students %}
+    <table border="1" cellpadding="5" cellspacing="0">
+
+        <tr>
+            <th>Rank</th>
+            <th>Name</th>
+            <th>Score (%)</th>
+            <th>Date</th>
+        </tr>
+
+        {% for student in top_students %}
+        <tr>
+            <td>{{ loop.index }}</td>
+            <td>{{ student[0] }}</td>
+            <td>{{ student[1] }}%</td>
+            <td>{{ student[2] }}</td>
+        </tr>
+        {% endfor %}
+
+    </table>
+
+    {% else %}
+    <p>No attempts in this category yet.</p>
+    {% endif %}
+
+    <br>
+
+    <a href="{{ url_for('dashboard') }}">Back to Dashboard</a>
+
+</body>
+
+</html>

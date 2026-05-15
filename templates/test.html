@@ -1,0 +1,52 @@
+<!DOCTYPE>
+<html>
+
+<head>
+    <title>
+        test
+    </title>
+    <script>
+        // Timer: 5 minutes = 300 seconds
+        let totalSeconds = 300;
+
+        function startTimer() {
+            const timerDisplay = document.getElementById("timer");
+            const interval = setInterval(() => {
+                let minutes = Math.floor(totalSeconds / 60);
+                let seconds = totalSeconds % 60;
+                timerDisplay.innerText = minutes + ":" + (seconds < 10 ? "0" : "") + seconds;
+                totalSeconds--;
+
+                if (totalSeconds < 0) {
+                    clearInterval(interval);
+                    alert("Time's up! Submitting your test.");
+                    document.getElementById("testForm").submit(); // auto submit
+                }
+            }, 1000);
+        }
+
+        window.onload = startTimer;
+    </script>
+</head>
+
+<body>
+    <h2>Time Remaining: <span id="timer">5:00</span></h2>
+    <form id="testForm" method="POST" action="/submit_test">
+
+        {% for q in questions %}
+
+        <p>{{ loop.index }}. {{ q[2] }}</p>
+        <input type="radio" name="q{{ q[0] }}" value="1" required> {{ q[3] }}<br>
+        <input type="radio" name="q{{ q[0] }}" value="2"> {{ q[4] }}<br>
+        <input type="radio" name="q{{ q[0] }}" value="3"> {{ q[5] }}<br>
+        <input type="radio" name="q{{ q[0] }}" value="4"> {{ q[6] }}<br>
+
+        <hr>
+
+        {% endfor %}
+
+        <button type="submit">Submit</button>
+    </form>
+</body>
+
+</html>
