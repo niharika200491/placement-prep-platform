@@ -1,4 +1,4 @@
-<!DOCTYPE html>>
+<!--<!DOCTYPE html>>
 <html>
 
 <head>
@@ -17,8 +17,215 @@
     <a href="{{ url_for('leaderboard',category='3')}}">DBMS</a> |
     <a href="{{ url_for('leaderboard',category='4')}}">Aptitude</a> |
     <a href="{{ url_for('leaderboard',category='5')}}">HTML/CSS</a>
+    <a href="/performance">
+        <button>View Performance</button>
+    </a>
     <a href="{{url_for('logout')}}">Logout</a>
 
+
+</body>
+
+</html>-->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Dashboard</title>
+
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: linear-gradient(to right, #141e30, #243b55);
+            color: white;
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 40px;
+            background-color: rgba(0, 0, 0, 0.2);
+        }
+
+        .navbar a {
+            text-decoration: none;
+            color: white;
+            background-color: #ff4b5c;
+            padding: 10px 18px;
+            border-radius: 8px;
+            transition: 0.3s ease;
+        }
+
+        .navbar a:hover {
+            transform: scale(1.05);
+        }
+
+        .welcome {
+            text-align: center;
+            margin-top: 40px;
+        }
+
+        .welcome h1 {
+            font-size: 40px;
+        }
+
+        .welcome p {
+            color: #dcdcdc;
+        }
+
+        .container {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 25px;
+            margin-top: 50px;
+            padding-bottom: 50px;
+        }
+
+        .card {
+            width: 250px;
+            background-color: white;
+            color: black;
+            padding: 25px;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.3);
+            transition: 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-8px);
+        }
+
+        .card h2 {
+            margin-bottom: 10px;
+        }
+
+        .card p {
+            color: gray;
+            font-size: 14px;
+        }
+
+        .card a {
+            text-decoration: none;
+        }
+
+        .btn {
+            display: inline-block;
+            margin-top: 15px;
+            background-color: #243b55;
+            color: white;
+            padding: 10px 18px;
+            border-radius: 8px;
+            transition: 0.3s ease;
+        }
+
+        .btn:hover {
+            background-color: #141e30;
+        }
+
+        .performance {
+            text-align: center;
+            margin-top: 30px;
+        }
+
+        .performance a {
+            text-decoration: none;
+            background-color: #00b894;
+            color: white;
+            padding: 12px 20px;
+            border-radius: 8px;
+            transition: 0.3s ease;
+        }
+
+        .performance a:hover {
+            transform: scale(1.05);
+        }
+    </style>
+
+</head>
+
+<body>
+
+    <div class="navbar">
+
+        <h2>Quiz Portal</h2>
+
+        <a href="{{url_for('logout')}}">Logout</a>
+
+    </div>
+
+    <div class="welcome">
+
+        <h1>Welcome, {{ name }} 👋</h1>
+
+        <p>Select a category and start your test</p>
+
+    </div>
+
+    <div class="container">
+
+        <div class="card">
+            <h2>Python</h2>
+            <p>Test your Python programming skills.</p>
+
+            <a href="{{ url_for('leaderboard',category='1') }}">
+                <div class="btn">View Leaderboard</div>
+            </a>
+        </div>
+
+        <div class="card">
+            <h2>Java</h2>
+            <p>Practice Java coding.</p>
+
+            <a href="{{ url_for('leaderboard',category='2') }}">
+                <div class="btn">View Leaderboard</div>
+            </a>
+        </div>
+
+        <div class="card">
+            <h2>DBMS</h2>
+            <p>Improve database management knowledge.</p>
+
+            <a href="{{ url_for('leaderboard',category='3') }}">
+                <div class="btn">View Leaderboard</div>
+            </a>
+        </div>
+
+        <div class="card">
+            <h2>Aptitude</h2>
+            <p>Sharpen your aptitude and reasoning.</p>
+
+            <a href="{{ url_for('leaderboard',category='4') }}">
+                <div class="btn">View Leaderboard</div>
+            </a>
+        </div>
+
+        <div class="card">
+            <h2>HTML/CSS</h2>
+            <p>Practice frontend development basics.</p>
+
+            <a href="{{ url_for('leaderboard',category='5') }}">
+                <div class="btn">View Leaderboard</div>
+            </a>
+        </div>
+
+    </div>
+
+    <div class="performance">
+
+        <a href="/performance">
+            View Performance
+        </a>
+
+        <br><br><br><br>
+
+        <a href="{{ url_for('start_test') }}">
+            Start Quiz
+        </a>
+
+    </div>
 
 </body>
 

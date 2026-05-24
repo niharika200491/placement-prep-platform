@@ -1,19 +1,169 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
     <title>Student Performance</title>
+
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: linear-gradient(to right, #141e30, #243b55);
+            color: white;
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 40px;
+            background-color: rgba(0, 0, 0, 0.2);
+        }
+
+        .navbar h2 {
+            margin: 0;
+        }
+
+        .back-btn {
+            text-decoration: none;
+            color: white;
+            background-color: #00b894;
+            padding: 10px 18px;
+            border-radius: 8px;
+            transition: 0.3s ease;
+        }
+
+        .back-btn:hover {
+            transform: scale(1.05);
+        }
+
+        .main {
+            text-align: center;
+            margin-top: 40px;
+        }
+
+        .main h1 {
+            font-size: 40px;
+        }
+
+        .main p {
+            color: #dcdcdc;
+        }
+
+        .container {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 25px;
+            padding: 50px;
+        }
+
+        .card {
+            width: 250px;
+            background-color: white;
+            color: black;
+            padding: 30px;
+            border-radius: 16px;
+            text-align: center;
+            box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.3);
+            transition: 0.3s ease;
+            animation: fadeIn 0.8s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-8px);
+        }
+
+        .card h2 {
+            margin-bottom: 15px;
+            color: #243b55;
+        }
+
+        .value {
+            font-size: 32px;
+            font-weight: bold;
+            color: #00b894;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+
 </head>
 
 <body>
-    <h2>Full Performance</h2>
 
-    <p>Total Tests Taken:{{ total_tests }}</p>
-    <p>Average Score:{{ avg_score }}</p>
-    <p>Best Score:{{ best_score }}</p>
-    <p>Weak Category:{{ weak_category }}</p>
+    <div class="navbar">
 
-    <a href="{{ url_for('dashboard') }}">Back to Dashboard</a>
+        <h2>Performance Dashboard</h2>
+
+        <a href="{{ url_for('dashboard') }}" class="back-btn">
+            Back to Dashboard
+        </a>
+
+    </div>
+
+    <div class="main">
+
+        <h1>Your Performance 📊</h1>
+
+        <p>Track your progress and improve your weak areas</p>
+
+    </div>
+
+    <div class="container">
+
+        <div class="card">
+
+            <h2>Total Tests Taken</h2>
+
+            <div class="value">
+                {{ total_tests }}
+            </div>
+
+        </div>
+
+        <div class="card">
+
+            <h2>Average Score</h2>
+
+            <div class="value">
+                {{ avg_score }}
+            </div>
+
+        </div>
+
+        <div class="card">
+
+            <h2>Best Score</h2>
+
+            <div class="value">
+                {{ best_score }}
+            </div>
+
+        </div>
+
+        <div class="card">
+
+            <h2>Weak Category</h2>
+
+            <div class="value">
+                {{ weak_category }}
+            </div>
+
+        </div>
+
+    </div>
+
 </body>
 
 </html>

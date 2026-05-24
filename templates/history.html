@@ -1,42 +1,204 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
     <title>Test History</title>
+
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: linear-gradient(to right, #141e30, #243b55);
+            color: white;
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 40px;
+            background-color: rgba(0, 0, 0, 0.2);
+        }
+
+        .navbar a {
+            text-decoration: none;
+            color: white;
+            background-color: #243b55;
+            padding: 10px 18px;
+            border-radius: 8px;
+            transition: 0.3s ease;
+        }
+
+        .navbar a:hover {
+            transform: scale(1.05);
+        }
+
+        .container {
+            width: 90%;
+            margin: auto;
+            padding-top: 40px;
+            padding-bottom: 50px;
+        }
+
+        .title {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .title h1 {
+            font-size: 38px;
+        }
+
+        .table-box {
+            background-color: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0px 5px 18px rgba(0, 0, 0, 0.3);
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            color: black;
+        }
+
+        th {
+            background-color: #243b55;
+            color: white;
+            padding: 15px;
+        }
+
+        td {
+            padding: 14px;
+            text-align: center;
+            border-bottom: 1px solid #ddd;
+        }
+
+        tr:hover {
+            background-color: #f2f2f2;
+        }
+
+        .empty {
+            text-align: center;
+            margin-top: 50px;
+            font-size: 20px;
+        }
+
+        .buttons {
+            text-align: center;
+            margin-top: 40px;
+        }
+
+        .buttons a {
+            text-decoration: none;
+            margin: 10px;
+            display: inline-block;
+            background-color: #00b894;
+            color: white;
+            padding: 12px 22px;
+            border-radius: 8px;
+            transition: 0.3s ease;
+        }
+
+        .buttons a:hover {
+            transform: scale(1.05);
+        }
+
+        .performance-title {
+            text-align: center;
+            margin-top: 50px;
+        }
+
+        .performance-title h2 {
+            font-size: 30px;
+        }
+    </style>
+
 </head>
 
 <body>
-    <h2>Your Test History</h2>
 
-    {% if tests %}
-    <table border="1" cellpadding="5" cellspacing="0">
-        <tr>
-            <th>Difficulty</th>
-            <th>Category</th>
-            <th>Score</th>
-            <th>Total Questions</th>
-            <th>Percentage</th>
-            <th>Date</th>
-        </tr>
-        {% for t in tests %}
-        <tr>
-            <td>{{ t[0] }}</td>
-            <td>{{ t[1] }}</td>
-            <td>{{ t[2] }}</td>
-            <td>{{ t[3] }}</td>
-            <td>{{ t[4] }}</td>
-            <td>{{ t[5] }}</td>
-        </tr>
-        {% endfor %}
-    </table>
-    {% else %}
-    <p>No test history available.</p>
-    {% endif %}
+    <div class="navbar">
 
-    <br>
-    <h1>If You Want To Know About Your Performance</h1>
-    <a href="{{url_for('performance',user_id=session['user_id'])}}">Viem Performance</a>
-    <a href=" {{ url_for('dashboard') }}">Back to Dashboard</a>
+        <h2>Quiz Portal</h2>
+
+        <a href="{{ url_for('dashboard') }}">
+            Dashboard
+        </a>
+
+    </div>
+
+    <div class="container">
+
+        <div class="title">
+
+            <h1>Your Test History 📊</h1>
+
+        </div>
+
+        {% if tests %}
+
+        <div class="table-box">
+
+            <table>
+
+                <tr>
+                    <th>Difficulty</th>
+                    <th>Category</th>
+                    <th>Score</th>
+                    <th>Total Questions</th>
+                    <th>Percentage</th>
+                    <th>Date</th>
+                </tr>
+
+                {% for t in tests %}
+
+                <tr>
+                    <td>{{ t[0] }}</td>
+                    <td>{{ t[1] }}</td>
+                    <td>{{ t[2] }}</td>
+                    <td>{{ t[3] }}</td>
+                    <td>{{ t[4] }}</td>
+                    <td>{{ t[5] }}</td>
+                </tr>
+
+                {% endfor %}
+
+            </table>
+
+        </div>
+
+        {% else %}
+
+        <div class="empty">
+
+            <p>No test history available.</p>
+
+        </div>
+
+        {% endif %}
+
+        <div class="performance-title">
+
+            <h2>Track Your Performance 🚀</h2>
+
+        </div>
+
+        <div class="buttons">
+
+            <a href="{{url_for('performance',user_id=session['user_id'])}}">
+                View Performance
+            </a>
+
+            <a href="{{ url_for('dashboard') }}">
+                Back to Dashboard
+            </a>
+
+        </div>
+
+    </div>
+
 </body>
 
 </html>

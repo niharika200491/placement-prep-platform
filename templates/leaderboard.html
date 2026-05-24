@@ -1,42 +1,186 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
     <title>{{ category }} Leaderboard</title>
+
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: linear-gradient(to right, #141e30, #243b55);
+            color: white;
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 40px;
+            background-color: rgba(0, 0, 0, 0.2);
+        }
+
+        .navbar h2 {
+            margin: 0;
+        }
+
+        .back-btn {
+            text-decoration: none;
+            color: white;
+            background-color: #00b894;
+            padding: 10px 18px;
+            border-radius: 8px;
+            transition: 0.3s ease;
+        }
+
+        .back-btn:hover {
+            transform: scale(1.05);
+        }
+
+        .main {
+            text-align: center;
+            margin-top: 40px;
+        }
+
+        .main h1 {
+            font-size: 42px;
+            margin-bottom: 10px;
+        }
+
+        .main p {
+            color: #dcdcdc;
+        }
+
+        .table-container {
+            width: 85%;
+            margin: 40px auto;
+            background-color: white;
+            border-radius: 18px;
+            overflow: hidden;
+            box-shadow: 0px 6px 18px rgba(0, 0, 0, 0.3);
+            animation: fadeIn 0.8s ease;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            color: black;
+        }
+
+        th {
+            background-color: #243b55;
+            color: white;
+            padding: 18px;
+            font-size: 16px;
+        }
+
+        td {
+            padding: 16px;
+            text-align: center;
+            border-bottom: 1px solid #ddd;
+        }
+
+        tr:hover {
+            background-color: #f2f2f2;
+        }
+
+        .rank {
+            font-weight: bold;
+            color: #243b55;
+        }
+
+        .empty-box {
+            width: 400px;
+            margin: 60px auto;
+            background-color: white;
+            color: black;
+            padding: 40px;
+            text-align: center;
+            border-radius: 16px;
+            box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(25px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+
 </head>
 
 <body>
 
-    <h2>{{ category }} Leaderboard - Top 5 Students</h2>
+    <div class="navbar">
+
+        <h2>Quiz Portal</h2>
+
+        <a href="{{ url_for('dashboard') }}" class="back-btn">
+            Back to Dashboard
+        </a>
+
+    </div>
+
+    <div class="main">
+
+        <h1>{{ category }} Leaderboard 🏆</h1>
+
+        <p>Top 5 Performing Students</p>
+
+    </div>
 
     {% if top_students %}
-    <table border="1" cellpadding="5" cellspacing="0">
 
-        <tr>
-            <th>Rank</th>
-            <th>Name</th>
-            <th>Score (%)</th>
-            <th>Date</th>
-        </tr>
+    <div class="table-container">
 
-        {% for student in top_students %}
-        <tr>
-            <td>{{ loop.index }}</td>
-            <td>{{ student[0] }}</td>
-            <td>{{ student[1] }}%</td>
-            <td>{{ student[2] }}</td>
-        </tr>
-        {% endfor %}
+        <table>
 
-    </table>
+            <tr>
+                <th>Rank</th>
+                <th>Name</th>
+                <th>Score (%)</th>
+                <th>Date</th>
+            </tr>
+
+            {% for student in top_students %}
+
+            <tr>
+
+                <td class="rank">
+                    #{{ loop.index }}
+                </td>
+
+                <td>{{ student[0] }}</td>
+
+                <td>{{ student[1] }}%</td>
+
+                <td>{{ student[2] }}</td>
+
+            </tr>
+
+            {% endfor %}
+
+        </table>
+
+    </div>
 
     {% else %}
-    <p>No attempts in this category yet.</p>
+
+    <div class="empty-box">
+
+        <h2>No Attempts Yet 😔</h2>
+
+        <p>Be the first student to appear on the leaderboard.</p>
+
+    </div>
+
     {% endif %}
-
-    <br>
-
-    <a href="{{ url_for('dashboard') }}">Back to Dashboard</a>
 
 </body>
 

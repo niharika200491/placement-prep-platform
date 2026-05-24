@@ -108,17 +108,18 @@ def registration():
         password = request.form["password"]
         cnpw=request.form["cpsw"]
         if not name:
-            return "Please Enter Name"
+            return render_template("register.html",error="Please Enter Name")
         if not email:
-            return "Please Enter Email"
+            return render_template("register.html",error="Please Enter Email")
         if not password:
-            return "Please Enter Password"
+            return render_template("register.html",error="Please Enter Password")
         if password!=cnpw:
-            return "password doesn't match"
+            return render_template("register.html",error="password doesn't match")
         
         
         
         hashed_password=generate_password_hash(password)
+        role = "user"
         
         
         conn = get_db()
@@ -130,13 +131,13 @@ def registration():
 
         if existing_user:
             conn.close()
-            return "Email already registered!"
+            return render_template("register.html",error="Email already registered!")
         
 
 
         cursor.execute(
-            "INSERT INTO users (name, email, password) VALUES (?, ?, ?)",
-            (name, email, hashed_password)
+            "INSERT INTO users (name, email, password,role) VALUES (?, ?, ?,?)",
+            (name, email, hashed_password,role)
         )
 
         conn.commit()
@@ -172,14 +173,110 @@ def login():
             session["user_name"] = user[1]
             return redirect(url_for("dashboard"))
         else:
-            return "Invalid Email or Password"
+            return render_template("login.html",error="Invalid Email or Password")
     return render_template("login.html")
+@app.route("/admin-login", methods=["GET", "POST"])
+def admin_login():
+
+    if request.method == "POST":
+
+        email = request.form["email"]
+        password = request.form["password"]
+
+        conn = get_db()
+        cursor = conn.cursor()
+
+        cursor.execute(
+            "SELECT * FROM users WHERE email=?",
+            (email,)
+        )
+
+        user = cursor.fetchone()
+        conn.close()
+
+        if user and check_password_hash(user[3], password):
+
+            if user[4] != "admin":
+                return "Access Denied"
+
+            session["user_id"] = user[0]
+            session["user_name"] = user[1]
+            session["role"] = user[4]
+
+            return redirect(url_for("admin_dashboard"))
+
+        else:
+            return render_template("admin_login.html",error="Invalid Email or Password")
+
+    return render_template("admin_login.html")
 @app.route("/dashboard")
 def dashboard():
     if "user_id" not in session:
         return redirect(url_for("login"))
 
+
     return render_template("dashboard.html", name=session["user_name"])
+@app.route("/admin")
+def admin_dashboard():
+
+    if "user_id" not in session:
+        return redirect(url_for("admin_login"))
+    if session["role"] != "admin":
+        return "Access Denied"
+    conn=get_db()
+    cursor=conn.cursor()
+    search = request.args.get("search")
+
+    if search:
+        cursor.execute(
+        """
+        SELECT id,name,email,role
+        FROM users
+        WHERE role='user'
+        AND (name LIKE ? OR email LIKE ?)
+        """,
+        ('%' + search + '%', '%' + search + '%')
+    )
+
+    else:
+        cursor.execute(
+        "SELECT id,name,email,role FROM users WHERE role='user'")
+    users=cursor.fetchall()
+    cursor.execute("SELECT count(*) from users")
+    total=cursor.fetchone()
+    
+    conn.close()
+
+
+
+    return render_template(
+        "admin.html",
+        users=users,
+        total_c=total[0]
+    )
+@app.route("/delete-user/<int:user_id>")
+def delete_user(user_id):
+
+    if "user_id" not in session:
+        return redirect(url_for("login"))
+
+    if session["role"] != "admin":
+        return "Access Denied"
+
+    conn = get_db()
+    cursor = conn.cursor()
+
+    cursor.execute(
+        "DELETE FROM users WHERE id=?",
+        (user_id,)
+    )
+
+    conn.commit()
+    conn.close()
+
+    return redirect(url_for("admin_dashboard"))
+
+
 @app.route("/start_test",methods=["GET","POST"])
 def start_test():
     if request.method=="POST":
@@ -297,25 +394,40 @@ def history():
     conn.close()
 
     return render_template("history.html", tests=tests)
-@app.route("/performance/<int:user_id>")
-def performance(user_id):
+@app.route("/performance")
+def performance():
+
+    # Check if user is logged in
+    if "user_id" not in session:
+        return redirect(url_for("login"))
+
+    user_id = session["user_id"]
 
     conn = get_db()
     cursor = conn.cursor()
 
-    # fetch all attempts of the student
+    # Total tests attempted
     cursor.execute(
-        "SELECT count(*)  FROM test_history WHERE user_id=? ",(user_id,)
+        "SELECT COUNT(*) FROM test_history WHERE user_id=?",
+        (user_id,)
     )
     total_tests = cursor.fetchone()[0]
+
+    # Average score
     cursor.execute(
-        "SELECT avg(score) FROM test_history where user_id=?",(user_id,)
+        "SELECT AVG(score) FROM test_history WHERE user_id=?",
+        (user_id,)
     )
-    avg_score=cursor.fetchone()[0]
+    avg_score = cursor.fetchone()[0]
+
+    # Best score
     cursor.execute(
-        "SELECT max(score) FROM test_history where user_id=?",(user_id,)
+        "SELECT MAX(score) FROM test_history WHERE user_id=?",
+        (user_id,)
     )
-    max_score=cursor.fetchone()[0]
+    max_score = cursor.fetchone()[0]
+
+    # Weak category
     cursor.execute("""
         SELECT category, AVG(percentage) as avg_performance
         FROM test_history
@@ -323,23 +435,28 @@ def performance(user_id):
         GROUP BY category
         ORDER BY avg_performance ASC
         LIMIT 1
-        """, 
-    (user_id,))
+    """, (user_id,))
+
     weak_category = cursor.fetchone()
+
     if weak_category:
         weak_category = weak_category[0]
     else:
         weak_category = "No data"
 
+    # Handle None values
+    avg_score = avg_score or 0
+    max_score = max_score or 0
 
     conn.close()
 
     return render_template(
-    "performance.html",
-    total_tests=total_tests,
-    avg_score=avg_score,
-    best_score=max_score,
-    weak_category=weak_category
+        "performance.html",
+        total_tests=total_tests,
+        avg_score=round(avg_score, 2),
+        best_score=max_score,
+        weak_category=weak_category,
+        name=session["user_name"]
     )
 @app.route("/logout")
 def logout():
