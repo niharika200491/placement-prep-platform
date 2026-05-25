@@ -428,13 +428,15 @@ def performance():
     max_score = cursor.fetchone()[0]
 
     # Weak category
+    # Weak category
     cursor.execute("""
-        SELECT category, AVG(percentage) as avg_performance
-        FROM test_history
-        WHERE user_id = ?
-        GROUP BY category
-        ORDER BY avg_performance ASC
-        LIMIT 1
+    SELECT category, AVG(percentage) AS avg_performance
+    FROM test_history
+    WHERE user_id = ?
+    GROUP BY LOWER(category)
+    HAVING COUNT(*) >= 2
+    ORDER BY avg_performance ASC
+    LIMIT 1
     """, (user_id,))
 
     weak_category = cursor.fetchone()
@@ -442,14 +444,13 @@ def performance():
     if weak_category:
         weak_category = weak_category[0]
     else:
-        weak_category = "No data"
+        weak_category = "Not enough data"
 
-    # Handle None values
+# Handle None values
     avg_score = avg_score or 0
     max_score = max_score or 0
 
     conn.close()
-
     return render_template(
         "performance.html",
         total_tests=total_tests,
