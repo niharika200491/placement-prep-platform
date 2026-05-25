@@ -78,12 +78,14 @@ def init_db():
     cursor.execute("""
         CREATE TABLE IF NOT EXISTS test_history (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
+        user_id INTEGER,
         category TEXT,
         difficulty TEXT,
         score INTEGER,
         total INTEGER,
         percentage REAL,
-        date TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        FOREIGN KEY (user_id) REFERENCES users(id)
         )
     """)
     try:
